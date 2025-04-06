@@ -1,4 +1,5 @@
 from DataStructures.Tree import bst_node as bst
+from DataStructures.List import single_linked_list as sl
 
 def new_map():
     return {"root": None}
@@ -49,13 +50,14 @@ def remove(my_bst, key):
     if my_bst["root"] is None:
         return my_bst
     else:
-        print(my_bst)
         my_bst["root"] = remove_node(my_bst["root"], key)
-        my_bst["root"]["size"] -= 1
-        return my_bst
+        if my_bst["root"] is None:
+            my_bst["root"] = None
+    return my_bst
 
 def remove_node(root, key):
-
+    if root is None:
+        return None
     if key < bst.get_key(root):
         root["left"] = remove_node(root["left"], key)
     elif key > bst.get_key(root):
@@ -70,21 +72,16 @@ def remove_node(root, key):
             root["key"] = min_node["key"]
             root["value"] = min_node["value"]
             root["right"] = remove_node(root["right"], min_node["key"])
-            return root
+    return root
 
-def get_min(my_bst):
-    if my_bst["root"] is None:
-        return None
+def contains(my_bst, key):
+
+    search = get(my_bst, key)
+    if search is None:
+        return False
     else:
-        return get_min_node(my_bst["root"])
-
-def get_min_node(root):
-    if root is None:
-        return None
-    while root["left"] is not None:
-        root = root["left"]
-    return bst.get_key(root)
-
+        return True
+    
 def size(my_bst):
     return size_tree(my_bst["root"])
 
@@ -92,5 +89,76 @@ def size_tree(root):
     if root is None:
         return 0
     return root["size"] 
-    
 
+def is_empty(my_bst):
+    if my_bst["root"] is None:
+        return True
+    else:
+        return False
+    
+def key_set(my_bst):
+    if my_bst["root"] is None:
+        return sl.new_list()
+    else:
+        result = sl.new_list()
+        result = key_set_tree(my_bst["root"], result)
+        return result
+    
+def key_set_tree(root, list):
+    if root is None:
+        return sl.new_list()
+    sl.add_last(list, bst.get_key(root))
+    key_set_tree(root["left"], list)
+    key_set_tree(root["right"], list)
+    return list
+
+def value_set(my_bst):
+    if my_bst["root"] is None:
+        return sl.new_list()
+    else:
+        result = sl.new_list()
+        return value_set_tree(my_bst["root"], result)
+    
+def value_set_tree(root, list):
+    if root is None:
+        return sl.new_list()
+    sl.add_last(list, bst.get_value(root))
+    value_set_tree(root["left"], list)
+    value_set_tree(root["right"], list)
+    return list
+
+def get_min(my_bst):
+    if my_bst["root"] is None:
+        return None
+    else:
+        return bst.get_key(get_min_node(my_bst["root"]))
+
+def get_min_node(root):
+    if root is None:
+        return None
+    while root["left"] is not None:
+        root = root["left"]
+    return root
+
+def get_max(my_bst):
+    if my_bst["root"] is None:
+        return None
+    else:
+        return bst.get_key(get_max_node(my_bst["root"]))
+
+def get_max_node(root):
+    if root is None:
+        return None
+    while root["right"] is not None:
+        root = root["right"]
+    return root
+    
+#PRUEBAS
+#map = new_map()
+#print(map)
+#map = put(map, 1, "uno")
+#map = put(map, 2, "dos")
+#map = put(map, 0, "cero")
+#print(map)
+#map = remove(map, 1)
+#print(map)
