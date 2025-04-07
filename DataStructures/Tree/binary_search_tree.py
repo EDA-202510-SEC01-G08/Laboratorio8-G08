@@ -1,5 +1,6 @@
 from DataStructures.Tree import bst_node as bst
 from DataStructures.List import single_linked_list as sl
+from DataStructures.List import array_list as ar
 
 def new_map():
     return {"root": None}
@@ -107,8 +108,8 @@ def key_set(my_bst):
 def key_set_tree(root, list):
     if root is None:
         return sl.new_list()
-    sl.add_last(list, bst.get_key(root))
     key_set_tree(root["left"], list)
+    sl.add_last(list, bst.get_key(root))
     key_set_tree(root["right"], list)
     return list
 
@@ -122,8 +123,8 @@ def value_set(my_bst):
 def value_set_tree(root, list):
     if root is None:
         return sl.new_list()
-    sl.add_last(list, bst.get_value(root))
     value_set_tree(root["left"], list)
+    sl.add_last(list, bst.get_value(root))
     value_set_tree(root["right"], list)
     return list
 
@@ -152,7 +153,69 @@ def get_max_node(root):
     while root["right"] is not None:
         root = root["right"]
     return root
-    
+
+def delete_min(my_bst):
+    if my_bst["root"] == None:
+        return None
+    else:
+        return delete_min_tree(my_bst["root"])
+
+def delete_min_tree(root):
+    if root["left"] != None:
+        root = root["left"]
+    elif root["left"] == None:
+        root["left"] = root["left"]["right"]
+    return root
+
+def delete_max(my_bst):
+    if my_bst["root"] == None:
+        return None
+    else:
+        return delete_max_tree(my_bst["root"])
+
+def delete_max_tree(root):
+    if root["right"] != None:
+        root = root["right"]
+    elif root["right"] == None:
+        root["right"] = root["right"]["left"]
+    return root
+
+def floor(my_bst, key):
+    if my_bst["root"] == None:
+        return None
+    keys = key_set(my_bst)
+    is_key = False
+    i = 0
+    while is_key == False and i < sl.size(keys):
+        if key > sl.get_element(keys, i):
+            i += 1
+        elif key == sl.get_element(keys, i):
+            is_key = True
+            index = i
+        elif key < sl.get_element(keys, i):
+            is_key = True
+            index = i - 1
+    floor_key = sl.get_element(keys, index)
+    return floor_key
+
+def ceiling(my_bst, key):
+    if my_bst["root"] == None:
+        return None
+    keys = key_set(my_bst)
+    is_key = False
+    i = 0
+    while is_key == False and i < sl.size(keys):
+        if key > sl.get_element(keys, i):
+            i += 1
+        elif key == sl.get_element(keys, i):
+            is_key = True
+            index = i
+        elif key < sl.get_element(keys, i):
+            is_key = True
+            index = i
+    floor_key = sl.get_element(keys, index)
+    return floor_key
+
 #PRUEBAS
 #map = new_map()
 #print(map)
@@ -160,5 +223,5 @@ def get_max_node(root):
 #map = put(map, 2, "dos")
 #map = put(map, 0, "cero")
 #print(map)
-#map = remove(map, 1)
-#print(map)
+#llaves = key_set(map)
+#print(llaves)
