@@ -2,6 +2,7 @@ from DataStructures.Tree import bst_node as bst
 from DataStructures.List import single_linked_list as sl
 from DataStructures.List import array_list as ar
 
+
 def new_map():
     return {"root": None}
 
@@ -181,40 +182,130 @@ def delete_max_tree(root):
     return root
 
 def floor(my_bst, key):
-    if my_bst["root"] == None:
+    if my_bst["root"] is None:
         return None
-    keys = key_set(my_bst)
-    is_key = False
-    i = 0
-    while is_key == False and i < sl.size(keys):
-        if key > sl.get_element(keys, i):
-            i += 1
-        elif key == sl.get_element(keys, i):
-            is_key = True
-            index = i
-        elif key < sl.get_element(keys, i):
-            is_key = True
-            index = i - 1
-    floor_key = sl.get_element(keys, index)
-    return floor_key
+    return floor_key(my_bst["root"], key)
+
+def floor_key(root, key):
+    if root is None:
+        return None
+    if key == bst.get_key(root):
+        return  bst.get_key(root)
+    elif key < bst.get_key(root):
+        return floor_key(root["left"], key)
+    else:
+        temp = floor_key(root["right"], key)
+        if temp is not None:
+            return temp
+        else:
+            return bst.get_key(root)
 
 def ceiling(my_bst, key):
-    if my_bst["root"] == None:
+    if my_bst["root"] is None:
         return None
-    keys = key_set(my_bst)
-    is_key = False
-    i = 0
-    while is_key == False and i < sl.size(keys):
-        if key > sl.get_element(keys, i):
-            i += 1
-        elif key == sl.get_element(keys, i):
-            is_key = True
-            index = i
-        elif key < sl.get_element(keys, i):
-            is_key = True
-            index = i
-    floor_key = sl.get_element(keys, index)
-    return floor_key
+    return ceiling_key(my_bst["root"], key)
+
+def ceiling_key(root, key):
+    if root is None:
+        return None
+    if key == bst.get_key(root):
+        return bst.get_key(root)
+    elif key < bst.get_key(root):
+        temp = ceiling_key(root["left"], key)
+        if temp is not None:
+            return temp
+        else:
+            return bst.get_key(root)
+    else:
+        return ceiling_key(root["right"], key)
+
+def select(my_bst,pos):
+    if my_bst["root"] is None:
+        return None
+    return select_key(my_bst["root"], pos)
+
+def select_key(root, key):
+    if root is None:
+        return None
+    left_size = size_tree(root["left"])
+    if key < left_size:
+        return select_key(root["left"], key)
+    elif key > left_size:
+        return select_key(root["right"], key - left_size - 1)
+    else:
+        return bst.get_key(root)
+    
+def rank(my_bst, key):
+    if my_bst["root"] is None:
+        return None
+    return rank_key(my_bst["root"], key)
+
+def rank_key(root, key):
+    if root is None:
+        return 0
+    if key < bst.get_key(root):
+        return rank_key(root["left"], key)
+    elif key > bst.get_key(root):
+        return 1 + size_tree(root["left"]) + rank_key(root["right"], key)
+    else:
+        return size_tree(root["left"])
+    
+def height(my_bst):
+    if my_bst["root"] is None:
+        return 0
+    return height_tree(my_bst["root"])
+
+def height_tree(root):
+    if root is None:
+        return 0
+    left_height = height_tree(root["left"])
+    right_height = height_tree(root["right"])
+    return max(left_height, right_height) + 1
+
+def keys(my_bst, key_initial , key_final):
+    if my_bst["root"] is None:
+        return sl.new_list()
+    else:
+        list_key = sl.new_list()
+        return keys_range(my_bst["root"], key_initial, key_final, list_key)
+
+def keys_range(root, key_initial, key_final, list_key):
+    if root is None:
+        return list_key  
+    if key_initial < bst.get_key(root):
+        keys_range(root["left"], key_initial, key_final, list_key)
+    if key_initial <= bst.get_key(root) <= key_final:
+        sl.add_last(list_key, bst.get_key(root))
+    if key_final > bst.get_key(root):
+        keys_range(root["right"], key_initial, key_final, list_key)
+    return list_key
+
+def values(my_bst, key_initial , key_final):
+    if my_bst["root"] is None:
+        return sl.new_list()
+    else:
+        list_value = sl.new_list()
+        return values_range(my_bst["root"], key_initial, key_final, list_value)
+    
+def values_range(root, key_initial, key_final, list_value):
+    if root is None:
+        return list_value  
+    if key_initial < bst.get_key(root):
+        values_range(root["left"], key_initial, key_final, list_value)
+    if key_initial <= bst.get_key(root) <= key_final:
+        sl.add_last(list_value, bst.get_value(root))
+    if key_final > bst.get_key(root):
+        values_range(root["right"], key_initial, key_final, list_value)
+    return list_value
+    
+def default_compare(key,element):
+    element_key = bst.get_key(element)  
+    if key == element_key:
+        return 0
+    elif key > element_key:
+        return 1
+    else:
+        return -1
 
 #PRUEBAS
 #map = new_map()
