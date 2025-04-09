@@ -226,14 +226,12 @@ def get_crimes_by_range_code(analyzer, initialDate, offensecode):
     # TODO Completar la función de consulta HECHO
     date = datetime.datetime.strptime(initialDate, '%Y-%m-%d').date()
     count = 0
-    size = al.size(analyzer["crimes"])  # Obtener el tamaño del ArrayList
-
     for i in range(al.size(analyzer["crimes"])):
         crime = al.get_element(analyzer["crimes"], i) 
         ocurred_date = crime["OCCURRED_ON_DATE"]
         ocurred_date_datetime = datetime.datetime.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S').date()
-        offence = str(crime["OFFENSE_CODE"])  
-
-        if ocurred_date_datetime == date and offence == str(offensecode):
+        offence = crime["OFFENSE_CODE"].upper().replace(" ", "")
+        if ocurred_date_datetime == date and offence == offensecode.upper().replace(" ", ""):
             count += 1
+        print(count)
     return count
