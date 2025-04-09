@@ -233,5 +233,5 @@ def get_crimes_by_range_code(analyzer, initialDate, offensecode):
         offence = crime["OFFENSE_CODE"].upper().replace(" ", "")
         if ocurred_date_datetime == date and offence == offensecode.upper().replace(" ", ""):
             count += 1
-        print(count)
+        print(count) # cuando imprime no pasa de 1 y deberia de dar 12 con 2017-01-01 y Vandalism
     return count
