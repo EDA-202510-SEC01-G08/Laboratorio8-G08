@@ -4,7 +4,8 @@ from DataStructures.List import array_list as ar
 
 
 def new_map():
-    return {"root": None}
+    return {"root": None,
+            "size": 0}
 
 def put(my_bst, key, value):
     if my_bst["root"] is None:
