@@ -120,8 +120,8 @@ def add_date_index(datentry, crime):
     offenseIndex = datentry['offenseIndex']
     offentry = lp.get(offenseIndex, crime['OFFENSE_CODE_GROUP'])
     if (offentry is None):
-        # TODO Realice el caso en el que no se encuentre el tipo de crimen
-        pass
+        # TODO Realice el caso en el que no se encuentre el tipo de crimen HECHO
+        return None
     else:
         # TODO Realice el caso en el que se encuentre el tipo de crimen
         pass
@@ -167,32 +167,38 @@ def index_height(analyzer):
     """
     Altura del arbol
     """
-    # TODO Completar la función de consulta
-    pass
+    # TODO Completar la función de consulta HECHO
+    height = bst.height(analyzer)
+    return height
 
 
 def index_size(analyzer):
     """
     Numero de elementos en el indice
     """
-    # TODO Completar la función de consulta
-    pass
+    # TODO Completar la función de consulta HECHO
+    size = bst.size(analyzer)
+    return size
 
 
 def min_key(analyzer):
     """
     Llave mas pequena
     """
-    # TODO Completar la función de consulta
-    pass
+    # TODO Completar la función de consulta HECHO
+    key_node = bst.get_min(analyzer)
+    key = key_node["key"]
+    return key
 
 
 def max_key(analyzer):
     """
     Llave mas grande
     """
-    # TODO Completar la función de consulta
-    pass
+    # TODO Completar la función de consulta HECHO
+    key_node = bst.get_max(analyzer)
+    key = key_node["key"]
+    return key
 
 
 def get_crimes_by_range(analyzer, initialDate, finalDate):
