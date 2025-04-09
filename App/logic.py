@@ -120,8 +120,8 @@ def add_date_index(datentry, crime):
     offenseIndex = datentry['offenseIndex']
     offentry = lp.get(offenseIndex, crime['OFFENSE_CODE_GROUP'])
     if (offentry is None):
-        # TODO Realice el caso en el que no se encuentre el tipo de crimen HECHO
-        return None
+        # TODO Realice el caso en el que no se encuentre el tipo de crimen 
+        pass
     else:
         # TODO Realice el caso en el que se encuentre el tipo de crimen
         pass
@@ -205,8 +205,16 @@ def get_crimes_by_range(analyzer, initialDate, finalDate):
     """
     Retorna el numero de crimenes en un rago de fechas.
     """
-    # TODO Completar la función de consulta
-    pass
+    # TODO Completar la función de consulta HECHO
+    date_i = datetime.datetime.strptime(initialDate, '%Y-%m-%d %H:%M:%S')
+    date_f = datetime.datetime.strptime(finalDate, '%Y-%m-%d %H:%M:%S')
+    count = 0
+    for i in range(len(analyzer["crimes"])):
+        ocurred_date = analyzer["crimes"][i]["OCCURRED_ON_DATE"]
+        ocurred_date_datetime = datetime.datetime.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S')
+        if ocurred_date_datetime >= date_i and ocurred_date <= date_f: 
+            count += 1
+    return count
 
 
 def get_crimes_by_range_code(analyzer, initialDate, offensecode):
@@ -214,5 +222,13 @@ def get_crimes_by_range_code(analyzer, initialDate, offensecode):
     Para una fecha determinada, retorna el numero de crimenes
     de un tipo especifico.
     """
-    # TODO Completar la función de consulta
-    pass
+    # TODO Completar la función de consulta HECHO
+    date = datetime.datetime.strptime(initialDate, '%Y-%m-%d %H:%M:%S')
+    count = 0
+    for i in range(len(analyzer["crimes"])):
+        ocurred_date = analyzer["crimes"][i]["OCCURRED_ON_DATE"]
+        ocurred_date_datetime = datetime.datetime.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S')
+        offence = analyzer["crimes"][i]["OFFENSE_CODE"]
+        if ocurred_date_datetime == date and offence == offensecode:
+            count += 1
+    return count
