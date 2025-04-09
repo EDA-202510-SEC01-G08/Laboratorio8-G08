@@ -237,18 +237,18 @@ def select_key(root, key):
     
 def rank(my_bst, key):
     if my_bst["root"] is None:
-        return None
+        return 0  
     return rank_key(my_bst["root"], key)
 
 def rank_key(root, key):
     if root is None:
-        return 0
+        return 0  
     if key < bst.get_key(root):
         return rank_key(root["left"], key)
     elif key > bst.get_key(root):
         return 1 + size_tree(root["left"]) + rank_key(root["right"], key)
     else:
-        return size_tree(root["left"])
+        return size_tree(root["left"])  
     
 def height(my_bst):
     if my_bst["root"] is None:
@@ -307,12 +307,3 @@ def default_compare(key,element):
     else:
         return -1
 
-#PRUEBAS
-#map = new_map()
-#print(map)
-#map = put(map, 1, "uno")
-#map = put(map, 2, "dos")
-#map = put(map, 0, "cero")
-#print(map)
-#llaves = key_set(map)
-#print(llaves)
