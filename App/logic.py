@@ -170,7 +170,7 @@ def index_height(analyzer):
     Altura del arbol
     """
     # TODO Completar la función de consulta HECHO
-    height = bst.height(analyzer)
+    height = bst.height(analyzer['dateIndex'])
     return height
 
 
@@ -179,7 +179,7 @@ def index_size(analyzer):
     Numero de elementos en el indice
     """
     # TODO Completar la función de consulta HECHO
-    size = bst.size(analyzer)
+    size = bst.size(analyzer['dateIndex'])
     return size
 
 
@@ -188,9 +188,8 @@ def min_key(analyzer):
     Llave mas pequena
     """
     # TODO Completar la función de consulta HECHO
-    key_node = bst.get_min(analyzer)
-    key = key_node["key"]
-    return key
+    key_node = bst.get_min(analyzer['dateIndex'])
+    return key_node
 
 
 def max_key(analyzer):
@@ -198,9 +197,8 @@ def max_key(analyzer):
     Llave mas grande
     """
     # TODO Completar la función de consulta HECHO
-    key_node = bst.get_max(analyzer)
-    key = key_node["key"]
-    return key
+    key_node = bst.get_max(analyzer['dateIndex'])
+    return key_node
 
 
 def get_crimes_by_range(analyzer, initialDate, finalDate):
@@ -208,13 +206,14 @@ def get_crimes_by_range(analyzer, initialDate, finalDate):
     Retorna el numero de crimenes en un rago de fechas.
     """
     # TODO Completar la función de consulta HECHO
-    date_i = datetime.datetime.strptime(initialDate, '%Y-%m-%d %H:%M:%S')
-    date_f = datetime.datetime.strptime(finalDate, '%Y-%m-%d %H:%M:%S')
+    date_i = datetime.datetime.strptime(initialDate, '%Y-%m-%d').date()
+    date_f = datetime.datetime.strptime(finalDate, '%Y-%m-%d').date()
     count = 0
-    for i in range(len(analyzer["crimes"])):
-        ocurred_date = analyzer["crimes"][i]["OCCURRED_ON_DATE"]
-        ocurred_date_datetime = datetime.datetime.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S')
-        if ocurred_date_datetime >= date_i and ocurred_date <= date_f: 
+    for i in range(al.size(analyzer["crimes"])):
+        crime = al.get_element(analyzer["crimes"], i)  
+        ocurred_date = crime["OCCURRED_ON_DATE"]
+        ocurred_date_datetime = datetime.datetime.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S').date()
+        if date_i <= ocurred_date_datetime <= date_f:
             count += 1
     return count
 
@@ -225,12 +224,16 @@ def get_crimes_by_range_code(analyzer, initialDate, offensecode):
     de un tipo especifico.
     """
     # TODO Completar la función de consulta HECHO
-    date = datetime.datetime.strptime(initialDate, '%Y-%m-%d %H:%M:%S')
+    date = datetime.datetime.strptime(initialDate, '%Y-%m-%d').date()
     count = 0
-    for i in range(len(analyzer["crimes"])):
-        ocurred_date = analyzer["crimes"][i]["OCCURRED_ON_DATE"]
-        ocurred_date_datetime = datetime.datetime.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S')
-        offence = analyzer["crimes"][i]["OFFENSE_CODE"]
-        if ocurred_date_datetime == date and offence == offensecode:
+    size = al.size(analyzer["crimes"])  # Obtener el tamaño del ArrayList
+
+    for i in range(al.size(analyzer["crimes"])):
+        crime = al.get_element(analyzer["crimes"], i) 
+        ocurred_date = crime["OCCURRED_ON_DATE"]
+        ocurred_date_datetime = datetime.datetime.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S').date()
+        offence = str(crime["OFFENSE_CODE"])  
+
+        if ocurred_date_datetime == date and offence == str(offensecode):
             count += 1
     return count

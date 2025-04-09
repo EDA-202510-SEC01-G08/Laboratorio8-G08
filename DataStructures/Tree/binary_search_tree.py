@@ -258,7 +258,7 @@ def height(my_bst):
 
 def height_tree(root):
     if root is None:
-        return 0
+        return -1
     left_height = height_tree(root["left"])
     right_height = height_tree(root["right"])
     return max(left_height, right_height) + 1
