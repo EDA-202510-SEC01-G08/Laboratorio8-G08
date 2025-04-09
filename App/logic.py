@@ -120,11 +120,13 @@ def add_date_index(datentry, crime):
     offenseIndex = datentry['offenseIndex']
     offentry = lp.get(offenseIndex, crime['OFFENSE_CODE_GROUP'])
     if (offentry is None):
-        # TODO Realice el caso en el que no se encuentre el tipo de crimen 
-        pass
+        # TODO Realice el caso en el que no se encuentre el tipo de crimen HECHO
+        new_offentry = new_offense_entry(crime['OFFENSE_CODE_GROUP'], crime)  
+        al.add_last(new_offentry['lstoffenses'], crime)  
+        lp.put(offenseIndex, crime['OFFENSE_CODE_GROUP'], new_offentry)  
     else:
-        # TODO Realice el caso en el que se encuentre el tipo de crimen
-        pass
+        # TODO Realice el caso en el que se encuentre el tipo de crimen HECHO
+        al.add_last(offentry['lstoffenses'], crime)  
     return datentry
 
 
