@@ -26,7 +26,7 @@
 
 import os
 import csv
-import datetime
+from datetime import datetime as dt
 from DataStructures.Tree import binary_search_tree as bst 
 from DataStructures.Map import map_linear_probing as lp
 from DataStructures.List import array_list as al
@@ -96,7 +96,7 @@ def update_date_index(map, crime):
     se crea y se actualiza el indice de tipos de crimenes
     """
     occurreddate = crime['OCCURRED_ON_DATE']
-    crimedate = datetime.datetime.strptime(occurreddate, '%Y-%m-%d %H:%M:%S')
+    crimedate = dt.strptime(occurreddate, '%Y-%m-%d %H:%M:%S')
     entry = bst.get(map, crimedate.date())
     if entry is None:
         # TODO Realizar el caso en el que no se encuentra la fecha HECHO
@@ -206,13 +206,13 @@ def get_crimes_by_range(analyzer, initialDate, finalDate):
     Retorna el numero de crimenes en un rago de fechas.
     """
     # TODO Completar la función de consulta HECHO
-    date_i = datetime.datetime.strptime(initialDate, '%Y-%m-%d').date()
-    date_f = datetime.datetime.strptime(finalDate, '%Y-%m-%d').date()
+    date_i = dt.strptime(initialDate, '%Y-%m-%d').date()
+    date_f = dt.strptime(finalDate, '%Y-%m-%d').date()
     count = 0
     for i in range(al.size(analyzer["crimes"])):
         crime = al.get_element(analyzer["crimes"], i)  
         ocurred_date = crime["OCCURRED_ON_DATE"]
-        ocurred_date_datetime = datetime.datetime.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S').date()
+        ocurred_date_datetime = dt.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S').date()
         if date_i <= ocurred_date_datetime <= date_f:
             count += 1
     return count
@@ -224,14 +224,13 @@ def get_crimes_by_range_code(analyzer, initialDate, offensecode):
     de un tipo especifico.
     """
     # TODO Completar la función de consulta HECHO
-    date = datetime.datetime.strptime(initialDate, '%Y-%m-%d').date()
+    date = dt.strptime(initialDate, '%Y-%m-%d').date()
     count = 0
-    for i in range(al.size(analyzer["crimes"])):
+    for i in range((al.size(analyzer["crimes"]))):
         crime = al.get_element(analyzer["crimes"], i) 
         ocurred_date = crime["OCCURRED_ON_DATE"]
-        ocurred_date_datetime = datetime.datetime.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S').date()
-        offence = crime["OFFENSE_CODE"].upper().replace(" ", "")
+        ocurred_date_datetime = dt.strptime(ocurred_date, '%Y-%m-%d %H:%M:%S').date()
+        offence = crime["OFFENSE_CODE_GROUP"].upper().replace(" ", "")
         if ocurred_date_datetime == date and offence == offensecode.upper().replace(" ", ""):
             count += 1
-        print(count) # cuando imprime no pasa de 1 y deberia de dar 12 con 2017-01-01 y Vandalism
     return count
